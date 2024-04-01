@@ -1,15 +1,30 @@
-import styles from './page.module.css';
+import Image from 'next/image';
+import Link from 'next/link';
+import { getVideos } from './firebase/functions';
+import styles from './page.module.css'
 
-export default function Home() {
+
+export default async function Home() {
+  const videos = await getVideos();
+
   return (
-    <main >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-
-      </div>
+    <main>
+      {
+        videos.map((video) => (
+          <Link href={`/watch?v=${video.filename}`} key={video.id}>
+            <Image src={'/thumbnail.png'} alt='video' width={120} height={80}
+              className={styles.thumbnail}/>
+          </Link>
+        ))
+      }
     </main>
-  );
+  )
 }
+
+/* 
+This will re-render this page once every 30 seconds and then it's going to cache the page and then send that cached copy to the users. 
+This reduces the load on getVideos function. We are doing this because when a new video is uploaded, we want to show it to the users as soon as possible. 
+By default, since the videos const will already be populated, the page will be served from the cache and the getVideos function will not be called, unless the page is refreshed manually. 
+This is why we need to revalidate the page every 30 seconds.
+*/
+export const revalidate = 30;
