@@ -29,6 +29,22 @@ const storage = new Storage()
 
 const rawVideoBucketName = 'blend-yt-raw-videos';
 
+const videoCollectionId = 'videos';
+
+export enum VideoStatus {
+	PROCESSING = 'processing',
+	PROCESSED = 'processed'
+}
+
+export interface Video {
+	id?: string,
+	uid?: string,
+	filename?: string,
+	status?: VideoStatus,
+	title?: string,
+	description?: string
+}
+
 // event-driven function/architecture - when a user is created, create a user document in the firestore
 export const createUser = functions.auth.user().onCreate((user) => {
 	const userInfo = {
@@ -64,4 +80,10 @@ export const generateUploadUrl = onCall({maxInstances: 1}, async (request) => {
 	})
 
 	return {url, fileName}
+})
+
+export const getVideos = onCall({maxInstances: 1}, async () => {
+	// TODO: this is a naive implementation, we should paginate the results
+	const snapshot = await firestore.collection(videoCollectionId).limit(10).get()
+	return snapshot.docs.map((doc) => doc.data())
 })
