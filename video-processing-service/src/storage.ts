@@ -12,10 +12,14 @@ const processedVideoBucketName = 'blend-yt-processed-videos';
 const localRawVideoPath = './raw-videos';
 const localProcessedVideoPath = './processed-videos';
 
+const localThumbnailDirectory = './thumbnails-blend-yt-processed-videos';
+const thumbnailBucketName = 'thumbnails-blend-yt-processed-videos';
+
 // Creates the local directories for raw and processed videos
 export function setupDirectories() {
     ensureDirectoryExists(localRawVideoPath);
     ensureDirectoryExists(localProcessedVideoPath);
+    ensureDirectoryExists(localThumbnailDirectory);
 }
 
 /**
@@ -125,4 +129,43 @@ function ensureDirectoryExists(dirPath: string) {
         fs.mkdirSync(dirPath, { recursive: true }); // recursive: true creates enables creating nested directories
         console.log(`Directory created at ${dirPath}`);
     }
+}
+
+export async function generateThumbnail(processedVideoName: string) {
+    return new Promise<void>((resolve, reject) => {
+        const thumbnailFilename = `thumbnail-${processedVideoName.split('.')[0]}.jpg`;
+        const thumbnailPath = `${localThumbnailDirectory}/${thumbnailFilename}`;
+        const videoPath = `${localProcessedVideoPath}/${processedVideoName}`;
+        const ffmpegProcess = ffmpeg(videoPath)
+            .on('end', async () => {
+                console.log('Thumbnail extraction complete');
+                await uploadThumbnailToBucket(thumbnailPath, thumbnailFilename);
+                resolve();
+            })
+            .on('error', (err) => {
+                console.error(`Thumbnail extraction failed: ${err}`);
+                reject(err);
+            })
+            .screenshots({
+                count: 1,
+                filename: thumbnailFilename,
+                folder: localThumbnailDirectory,
+            });
+    });
+}
+
+export async function uploadThumbnailToBucket(thumbnailPath: string, fileName: string) {
+    console.log(`Uploading thumbnail ${fileName} from local directory ${thumbnailPath} to bucket: ${thumbnailBucketName}`)
+    const bucket = storage.bucket(thumbnailBucketName);
+    await bucket.upload(thumbnailPath, {
+        destination: fileName,
+    });
+    console.log(`Thumbnail ${fileName} uploaded to ${thumbnailBucketName}`);
+    await bucket.file(fileName).makePublic();
+    console.log(`Thumbnail ${fileName} is now public`);
+}
+
+export function deleteThumbnail(processedVideoName: string) {
+     const thumbnailFilename = `thumbnail-${processedVideoName.split('.')[0]}.jpg`;
+    return deleteFile(`${localThumbnailDirectory}/${thumbnailFilename}`);
 }

@@ -1,5 +1,5 @@
 import express from 'express';
-import { convertVideo, deleteProcessedVideo, deleteRawVideo, downloadVideoFromBucket, setupDirectories, uploadVideoToBucket } from './storage'; 
+import { convertVideo, deleteProcessedVideo, deleteRawVideo, deleteThumbnail, downloadVideoFromBucket, setupDirectories, uploadThumbnailToBucket, uploadVideoToBucket, generateThumbnail } from './storage'; 
 import { VideoStatus, isVideoNew, setVideo } from './firestore';
 
 setupDirectories();
@@ -62,10 +62,16 @@ app.post('/process-video', async (req, res) => {
         filename: outputFilename
     });
 
+    //  Extract a thumbnail from the video and upload it to the Cloud Storage
+    await generateThumbnail(outputFilename);
+
+    // TODO: create thumbnail metadata in Firestore ??
+
     //  Delete the raw and processed videos from the local filesystem
     await Promise.all([
         deleteRawVideo(inputFilename),
-        deleteProcessedVideo(outputFilename)
+        deleteProcessedVideo(outputFilename),
+        deleteThumbnail(outputFilename)
     ]);
 
     console.log('Video processing complete');

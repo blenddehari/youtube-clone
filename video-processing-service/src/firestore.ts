@@ -28,7 +28,8 @@ export interface Video {
   filename?: string,
   status?: VideoStatus,
   title?: string,
-  description?: string
+  description?: string,
+  thumbnail?: string,
 }
 
 async function getVideo(videoId: string) {

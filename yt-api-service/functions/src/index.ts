@@ -42,7 +42,8 @@ export interface Video {
 	filename?: string,
 	status?: VideoStatus,
 	title?: string,
-	description?: string
+	description?: string,
+	thumbnail?: string,
 }
 
 // event-driven function/architecture - when a user is created, create a user document in the firestore
@@ -87,3 +88,6 @@ export const getVideos = onCall({maxInstances: 1}, async () => {
 	const snapshot = await firestore.collection(videoCollectionId).limit(10).get()
 	return snapshot.docs.map((doc) => doc.data())
 })
+
+// TODO: implement this function
+// export const getThumbnails = onCall({maxInstances: 1}, async () => {

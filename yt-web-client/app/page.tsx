@@ -6,6 +6,7 @@ import styles from './page.module.css'
 
 export default async function Home() {
   const videos = await getVideos();
+  // TODO: get thumbnails and render them
 
   return (
     <main>
