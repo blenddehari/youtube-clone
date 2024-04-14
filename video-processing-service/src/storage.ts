@@ -169,3 +169,9 @@ export function deleteThumbnail(processedVideoName: string) {
      const thumbnailFilename = `thumbnail-${processedVideoName.split('.')[0]}.jpg`;
     return deleteFile(`${localThumbnailDirectory}/${thumbnailFilename}`);
 }
+
+// check if the video exists in the bucket and is not marked for soft deletion
+export async function checkVideoExists(filename: string): Promise<boolean> {
+    const [exists] = await storage.bucket(rawVideoBucketName).file(filename).exists();
+    return exists;
+}

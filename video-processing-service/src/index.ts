@@ -1,5 +1,5 @@
 import express from 'express';
-import { convertVideo, deleteProcessedVideo, deleteRawVideo, deleteThumbnail, downloadVideoFromBucket, setupDirectories, uploadThumbnailToBucket, uploadVideoToBucket, generateThumbnail } from './storage'; 
+import { convertVideo, deleteProcessedVideo, deleteRawVideo, deleteThumbnail, downloadVideoFromBucket, setupDirectories, uploadThumbnailToBucket, uploadVideoToBucket, generateThumbnail, checkVideoExists } from './storage'; 
 import { VideoStatus, isVideoNew, setVideo } from './firestore';
 
 setupDirectories();
@@ -38,6 +38,13 @@ app.post('/process-video', async (req, res) => {
         });
     }
 
+    // check if the video exists in the bucket
+    const videoFound = await checkVideoExists(inputFilename);
+    if (!videoFound) {
+        console.error('Video not found');
+        return res.status(404).send('Video not found: ' + inputFilename);
+    }
+
     //Download the raw video from the Cloud Storage
     await downloadVideoFromBucket(inputFilename);
 
@@ -65,7 +72,7 @@ app.post('/process-video', async (req, res) => {
     //  Extract a thumbnail from the video and upload it to the Cloud Storage
     await generateThumbnail(outputFilename);
 
-    // TODO: create thumbnail metadata in Firestore ??
+    // TODO: create thumbnail metadata in Firestore
 
     //  Delete the raw and processed videos from the local filesystem
     await Promise.all([
