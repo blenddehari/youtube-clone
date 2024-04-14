@@ -16,6 +16,7 @@ const firestore = new Firestore();
 
 
 const videoCollectionId = 'videos';
+const thumbnailCollectionId = 'thumbnails';
 
 export enum VideoStatus {
     PROCESSING = 'processing',
@@ -47,4 +48,22 @@ export function setVideo(videoId: string, video: Video) {
 export async function isVideoNew(videoId: string) {
   const video = await getVideo(videoId);
   return video?.status === undefined;
+}
+
+// TODO: Implement the DELETE operation
+// export async function deleteVideo(videoId: string) {
+//   await firestore.collection(videoCollectionId).doc(videoId).delete();
+// }
+
+// TODO: check these implementations
+export async function getThumbnail(videoId: string) {
+  const snapshot = await firestore.collection(thumbnailCollectionId).doc(videoId).get();
+  return (snapshot.data() as Video) ?? {};
+}
+
+export function setThumbnail(videoId: string, thumbnail: Video) {
+  return firestore
+    .collection(thumbnailCollectionId)
+    .doc(videoId)
+    .set(thumbnail, { merge: true })
 }
