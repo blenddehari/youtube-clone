@@ -66,13 +66,12 @@ app.post('/process-video', async (req, res) => {
     //  Update the Firestore document to reflect the video has been processed
     await setVideo(videoId, {
         status: VideoStatus.PROCESSED,
-        filename: outputFilename
+        filename: outputFilename,
+        thumbnail: `thumbnail-${outputFilename.replace(/\.[^.]+$/, '.jpg')}`
     });
 
     //  Extract a thumbnail from the video and upload it to the Cloud Storage
     await generateThumbnail(outputFilename);
-
-    // TODO: create thumbnail metadata in Firestore
 
     //  Delete the raw and processed videos from the local filesystem
     await Promise.all([
