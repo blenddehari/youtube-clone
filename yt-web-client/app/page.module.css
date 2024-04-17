@@ -1,3 +1,96 @@
-.thumbnail {
-    margin: 10px;
+.mainPage {
+    background-color: #181818;
 }
+
+.page {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1rem;
+  padding: 1rem;
+}
+
+.page > div {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+  /* background-color: #f9f9f9; */
+}
+
+.page > div:hover {
+  border: 1px solid #272828;
+  transform: scale(1.1);
+}
+
+.page img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 5px 5px 5px 5px;
+}
+
+.page h2 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.page p {
+  font-size: 1rem;
+  margin: 0.5rem 1rem;
+}
+
+.page a {
+  color: #065fd4;
+  font-size: 0.9rem;
+  margin: 0.5rem 1rem;
+}
+
+.page a:hover {
+  text-decoration: underline;
+}
+
+.page button {
+  display: inline-block;
+  border: 1px solid gray;
+  color: #065fd4;
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-family: "Roboto", "Arial", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.page button:hover {
+  background-color: #bee0fd;
+  border: 1px solid transparent;
+}
+
+.page button:active {
+  background-color: #065fd4;
+  color: #fff;
+}
+
+.page button:focus {
+  outline: none;
+}
+
+.page button:disabled {
+  background-color: #ccc;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.page button:disabled:hover {
+  background-color: #ccc;
+}
+
+.page button:disabled:active {
+  background-color: #ccc;
+}
+

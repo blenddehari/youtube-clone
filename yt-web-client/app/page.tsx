@@ -9,13 +9,16 @@ export default async function Home() {
   const thumbnailPrefix = 'https://storage.googleapis.com/thumbnails-blend-yt-processed-videos/';
 
   return (
-    <main>
+    <main className={styles.page}>
       {
         videos.map((video) => (
-          <Link href={`/watch?v=${video.filename}`} key={video.id}>
-            <Image src={thumbnailPrefix + video.thumbnail} alt='video' width={120} height={80}
-              className={styles.thumbnail}/>
-          </Link>
+          <div>
+            <Link href={`/watch?v=${video.filename}`} key={video.id}>
+              <Image src={thumbnailPrefix + video.thumbnail} alt='video' width={120} height={80}
+                className={styles.thumbnail}/>
+            </Link>
+            <h2>{video.id}</h2>
+          </div>
         ))
       }
     </main>

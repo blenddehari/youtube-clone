@@ -24,7 +24,6 @@ export default function Navbar() {
 
   return (
     <div>
-      <h1>Navbar</h1>
       <nav className={styles.nav}>
         <Link href="/">
             <Image src="/youtube-logo.svg" alt="Youtube Logo" width={90} height={20} />

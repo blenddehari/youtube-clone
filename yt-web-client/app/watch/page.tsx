@@ -6,7 +6,7 @@ export default function Watch() {
     const videoSrc = useSearchParams().get("v");
     return (
         <div>
-            <h1>Watch</h1>
+            <h2>Watching {videoSrc}</h2>
             <video controls src={videoPrefix + videoSrc} />
         </div>
     );
