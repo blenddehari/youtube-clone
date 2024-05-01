@@ -12,10 +12,10 @@ import Upload from './upload';
 export default function Navbar() {
     // Init user state
     const [user, setUser] = useState<User | null>(null);
-
+    
     useEffect(() => {
-        const unsubscribe = onAuthStateChangedHelper((user: SetStateAction<User | null>) => {
-            setUser(user);
+      const unsubscribe = onAuthStateChangedHelper(async (user: SetStateAction<User | null>) => {
+        setUser(user);
         });
 
         // Cleanup subscription on unmount
@@ -31,6 +31,16 @@ export default function Navbar() {
         {
             user && <Upload />
         }
+        {/* show user profile picture as a round avatar and user email next the the signout button */}
+        {
+            user && (
+                <div className={styles.user}>
+                    <Image src={user.photoURL} alt='user' width={40} height={40} className={styles.user}/>
+                    <p>{user.email}</p>
+                </div>
+            )
+        }
+
         <SignIn user={user} />
       </nav>
     </div>

@@ -19,3 +19,11 @@
     align-items: center;
     padding: 1em;
 }
+
+.user {
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    margin-left: auto;
+    padding: 0.5em;
+}

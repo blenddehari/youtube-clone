@@ -3,7 +3,6 @@ import { functions } from "./firebase";
 
 const generateUploadUrl = httpsCallable(functions, "generateUploadUrl");
 const getVideosFunction = httpsCallable(functions, "getVideos");
-// const getThumbnailsFunction = httpsCallable(functions, "getThumbnails");
 
 // TODO: how to streamline the types among all services
 export enum VideoStatus {
@@ -39,8 +38,3 @@ export async function getVideos() {
    const response = await getVideosFunction();
    return response.data as Video[];
 }
-
-// export async function getThumbnails() {
-//     const response = 
-//     return response.json();
-// }

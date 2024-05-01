@@ -88,6 +88,3 @@ export const getVideos = onCall({maxInstances: 1}, async () => {
 	const snapshot = await firestore.collection(videoCollectionId).limit(10).get()
 	return snapshot.docs.map((doc) => doc.data())
 })
-
-// TODO: implement this function
-// export const getThumbnails = onCall({maxInstances: 1}, async () => {
