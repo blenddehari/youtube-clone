@@ -10,6 +10,9 @@ const override: CSSProperties = {
   display: "block",
   margin: "0 auto",
   borderColor: "black",
+  position: "absolute",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
 };
 
 interface SpinnerProps {
@@ -23,7 +26,7 @@ const Spinner: React.FC<SpinnerProps> = ({ color, loading }) => {
             color={color}
             loading={loading}
             cssOverride={override}
-            size={150}
+            size={100}
             aria-label="Loading Spinner"
             data-testid="loader"
         />
