@@ -85,6 +85,6 @@ export const generateUploadUrl = onCall({maxInstances: 1}, async (request) => {
 
 export const getVideos = onCall({maxInstances: 1}, async () => {
 	// TODO: this is a naive implementation, we should paginate the results
-	const snapshot = await firestore.collection(videoCollectionId).limit(10).get()
+	const snapshot = await firestore.collection(videoCollectionId).limit(100).get()
 	return snapshot.docs.map((doc) => doc.data())
 })
