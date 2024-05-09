@@ -31,7 +31,6 @@ export default function Navbar() {
         {
             user && <Upload />
         }
-        {/* show user profile picture as a round avatar and user email next the the signout button */}
         {
             user && (
                 <div className={styles.user}>

@@ -46,7 +46,7 @@ export interface Video {
 	thumbnail?: string,
 }
 
-// event-driven function/architecture - when a user is created, create a user document in the firestore
+// event-driven functions/architecture - when a user is created, create a user document in the firestore
 export const createUser = functions.auth.user().onCreate((user) => {
 	const userInfo = {
 		uid: user.uid,
